@@ -124,9 +124,9 @@ if __name__ == '__main__':
     # data = get_all_data_from_device(get_thermalimage_by_dates, {'date_from': date_from, 'date_to': date_to},
     #                                 extract_data_from_thermalimage_response)
 
-    data = get_data_every_n_min(date_from, date_to, 5)
+    data = get_data_every_n_min(date_from, date_to, 15)
 
-    with open('thermal.csv', 'w') as csvfile:
+    with open('thermal_15_min.csv', 'w') as csvfile:
         field_names = ['timestamp', 'thermal']
         csv_writer = csv.DictWriter(csvfile, fieldnames=field_names)
         csv_writer.writeheader()
