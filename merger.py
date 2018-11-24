@@ -4,9 +4,10 @@ from typing import List, Dict, Tuple
 
 
 class Record:
-    headers = ['timestamp', 'humidity', 'co2', 'temperature', 'sensor_r', 'sensor_l', 'thermal', 'day_of_week']
+    headers = ['', 'timestamp', 'humidity', 'co2', 'temperature', 'sensor_r', 'sensor_l', 'thermal',
+               'day_of_week', 'day', 'month']
 
-    def __init__(self, _timestamp: datetime, _thermal: float):
+    def __init__(self, _timestamp: datetime.datetime, _thermal: float):
         self.timestamp: datetime = _timestamp
         self.thermal: float = _thermal
         self.co2 = None
@@ -14,7 +15,9 @@ class Record:
         self.temperature = None
         self.sensor_r: int = None
         self.sensor_l: int = None
-        self.week_day: int = None
+        self.week_day: int = _timestamp.weekday()
+        self.month: int = _timestamp.month
+        self.day: int = _timestamp.day
 
     def to_dict(self):
         time_template = '%Y-%m-%dT%H:%M:%S.%fZ'
@@ -26,7 +29,9 @@ class Record:
             'sensor_r': self.sensor_r,
             'sensor_l': self.sensor_l,
             'thermal': self.thermal,
-            'day_of_week': self.week_day
+            'day_of_week': self.week_day,
+            'day': self.day,
+            'month': self.month
         }
 
 
@@ -67,8 +72,7 @@ def read_ds1():
             co2 = int(row['co2'])
             humidity = float(row['humidity'])
             temperature = float(row['temperature'])
-            week_d = int(row['timestamp'])
-            ds1_list_records[t_s] = (co2, humidity, temperature, week_d)
+            ds1_list_records[t_s] = (co2, humidity, temperature)
     return ds1_list_records
 
 
@@ -107,7 +111,6 @@ def get_records_with_ds1(records_list: List[Record], ds1):
             rec.co2 = ds1[rec.timestamp][0]
             rec.humidity = ds1[rec.timestamp][1]
             rec.temperature = ds1[rec.timestamp][2]
-            rec.week_day = ds1[rec.timestamp][3]
         else:
             sum_co2 = 0
             sum_humidity = 0
@@ -145,7 +148,7 @@ if __name__ == '__main__':
     with open('final.csv', 'w') as csvfile:
         csv_writer = csv.DictWriter(csvfile, fieldnames=Record.headers)
         csv_writer.writeheader()
-        for rec in records_final:
-            csv_writer.writerow(rec.to_dict())
-
-    print(records_final)
+        for i, rec in enumerate(records_final):
+            record_dict = rec.to_dict()
+            record_dict[''] = i
+            csv_writer.writerow(record_dict)
