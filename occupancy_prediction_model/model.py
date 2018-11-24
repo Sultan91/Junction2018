@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
 
+from sklearn import linear_model
+
 """def load_data(file_name):
 	data = pd.read_csv(file_name, header=0, index_col=1, parse_dates=True, squeeze=True)
 	return data"""
@@ -74,16 +76,48 @@ def feature_selection_and_log_reg(values, data):
 		score = accuracy_score(testy, yhat)
 		print('feature=%d, name=%s, score=%.3f' % (f, data.columns[f], score))
 
+
+def linear_regression():
+	from sklearn import datasets ## imports datasets from scikit-learn
+	data = datasets.load_boston()
+
+	print("Keys:")
+	print(data.keys())
+
+	#pyplot.plot(data['data'])
+	pyplot.plot(data['target'])
+	pyplot.show()
+
+	# define the data/predictors as the pre-set feature names  
+	df = pd.DataFrame(data.data, columns=data.feature_names)
+
+	print(df.head())
+
+	# Put the target (housing value -- MEDV) in another DataFrame
+	target = pd.DataFrame(data.target, columns=["MEDV"])
+
+	X = df
+	y = target["MEDV"]
+
+	lm = linear_model.LinearRegression()
+	model = lm.fit(X,y)
+
+	predictions = lm.predict(X)
+	print(predictions[0:5])
+
+	lm.score(X,y)
+
 def main():
 
 	# load the dataset
 	data = pd.read_csv('combined.csv', header=0, index_col=0, parse_dates=True, squeeze=True)
-	plot_data(data)
+	#plot_data(data)
 	values = data.values
 	
 	#naive_prediction(values)
 	#logistic_regression(values)
-	feature_selection_and_log_reg(values, data)
+	#feature_selection_and_log_reg(values, data)
+	linear_regression()
 
   
 if __name__== "__main__":
