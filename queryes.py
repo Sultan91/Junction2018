@@ -23,12 +23,14 @@ def extract_data_from_thermalimage_response(response: requests.Response) -> List
     :param response: response from thermalimage
     :return: list of dicts in format [{'date': 'image_array'}, {...}, ... ]
     """
-    items = response.json()['data']['items']
-    result_list = []
-    for item in items:
-        item_time = item['captureTime']
-        result_list.append({item_time: item['image']})
-    return result_list
+    if response.ok:
+        items = response.json()['data']['items']
+        result_list = []
+        for item in items:
+            item_time = item['captureTime']
+            result_list.append({item_time: item['image']})
+        return result_list
+    return []
 
 
 def get_all_data_from_device(func: Callable, func_kwargs: Dict, func_extract: Callable) -> List[Dict]:
@@ -39,7 +41,7 @@ def get_all_data_from_device(func: Callable, func_kwargs: Dict, func_extract: Ca
     :param func_extract: function to extract_data
     :return: List of Dicts, which contains data
     """
-    _item_count = 10
+    _item_count = 5
     _start_index = 0
     result_list = []
     is_data = True
