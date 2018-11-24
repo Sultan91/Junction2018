@@ -10,7 +10,7 @@ def from_data_to_image(data: List[List], image_name: str) -> None:
     """
     Saves image to 'images/' dir
     """
-    img = Image.new('RGB', (24, 32), color='black')
+    img = Image.new('RGB', (32, 24), color='black')
     minimum = 100
     maximum = 0
     for row in data:
@@ -20,7 +20,7 @@ def from_data_to_image(data: List[List], image_name: str) -> None:
 
     for i, row in enumerate(data):
         for j, cell in enumerate(row):
-            img.putpixel((i, j), ((int(255 * (maximum - cell) / (maximum - minimum))), 0, 0))
+            img.putpixel((j, i), ((int(255 * (1 - (maximum - cell) / (maximum - minimum)))), 0, 0))
 
             img.save(f'images/{image_name}.png')
 
