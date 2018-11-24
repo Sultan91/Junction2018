@@ -38,8 +38,9 @@ def extract_data_from_thermalimage_response(response: requests.Response) -> List
 def get_data_every_n_min(date_from: datetime, date_to: datetime, minute_range: int, item_count: int = 1) -> List[Tuple]:
     current_time = date_from
     result_list = []
-    tot = int((date_to-date_from)/timedelta(minutes=minute_range))
-    pbar1 = tqdm(total=tot)
+
+    # Progressbar
+    pbar1 = tqdm(total=int((date_to - date_from) / timedelta(minutes=minute_range)))
     while date_to > current_time:
         pbar1.update(1)
         try:
@@ -68,10 +69,7 @@ def get_all_data_from_device(func: Callable, func_kwargs: Dict, func_extract: Ca
     func_kwargs['item_count'] = _item_count
     func_kwargs['start_index'] = _start_index
 
-    pbar = tqdm(total=6912)
-
     while is_data:
-        pbar.update(1)
         # get and process data
         response: requests.Response = func(**func_kwargs)
         if response.ok:
@@ -86,7 +84,6 @@ def get_all_data_from_device(func: Callable, func_kwargs: Dict, func_extract: Ca
             func_kwargs['start_index'] = _start_index
         else:
             print('Error')
-    pbar.close()
     return result_list
 
 
@@ -113,7 +110,7 @@ def __post_query_to_site(data: Dict, item_count: int = 0, start_index: int = 0, 
 
     try:
         response = requests.post(f'https://v0wwaqqnpa.execute-api.eu-west-1.amazonaws.com/V1/sites/{site}/{path}',
-                                data=json.dumps(data), headers=headers, params=params, timeout=10)
+                                 data=json.dumps(data), headers=headers, params=params, timeout=10)
         return response
     except Exception as e:
         return None
@@ -128,9 +125,6 @@ if __name__ == '__main__':
     #                                 extract_data_from_thermalimage_response)
 
     data = get_data_every_n_min(date_from, date_to, 5)
-
-    # for timestamp, d in data:
-    #     print(timestamp, d, '\n')
 
     with open('thermal.csv', 'w') as csvfile:
         field_names = ['timestamp', 'thermal']
