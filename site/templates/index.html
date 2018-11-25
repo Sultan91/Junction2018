@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graphs from CSVs</title>
+    <link rel='stylesheet' href='../stylesheets/style.css'/>
+    <link rel='stylesheet' href='../stylesheets/bootstrap.min.css'/>
+    <link rel='stylesheet' href='../stylesheets/font-awesome.min.css'/>
+
+    <!-- Load c3.css -->
+    <link href="../stylesheets/c3.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="../javascripts/d3.v3.min.js" charset="utf-8"></script>
+    <script src="../javascripts/c3.min.js"></script>
+
+    <!-- Load papaparse.js -->
+    <script src="../javascripts/papaparse.min.js"></script>
+</head>
+<body>
+<br><br><br>
+<div class="container">
+    <div id="chart"></div>
+</div>
+
+<script src="../javascripts/create-graph.js"></script>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+    $(function () {
+        $('a#search_form_input').bind('click', function () {
+            $.getJSON('/accupancy',
+                function (data) {
+                    //do nothing
+                });
+            return false;
+        });
+    });
+</script>
+
+<script>
+    $('a#search_form_input').keyup(function () {
+        var text = $(this).val();
+
+        $.ajax({
+            url: "/accupancy",
+            type: "get",
+            data: {jsdata: text},
+            success: function (response) {
+                $("#place_for_suggestions").html(response);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    });
+</script>
+
+<!-- Button -->
+<div class='container'>
+    <h3>Accupancy prediction</h3>
+    <form>
+        <p>day <input type="text" name="Name"/></p>
+        <p>day_of_week <input type="text" name="Physics"/></p>
+        <p>hour <input type="text" name="chemistry"/></p>
+        <p>minute <input type="text" name="Mathematics"/></p>
+        <p>co2 <input type="text" name="Mathematics"/></p>
+        <p>temperature <input type="text" name="Mathematics"/></p>
+        <p>humidity <input type="text" name="Mathematics"/></p>
+        <a href=# id=search_form_input>
+            <button class='btn btn-default'>Get Data</button>
+        </a>
+    </form>
+    <div id="place_for_suggestions"></div>
+</div>
+
+</html>
