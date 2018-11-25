@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Junction 2018</title>
+</head>
+<body>
+<script type="text/javascript">
+    function pic1() {
+        document.getElementById("img").src = "../images/co2.jpg";
+    }
+
+    function pic2() {
+        document.getElementById("img").src = "../images/hymid.jpg";
+    }
+
+    function pic3() {
+        document.getElementById("img").src = "../images/sensor_l.jpg";
+    }
+
+    function pic4() {
+        document.getElementById("img").src = "../images/sensor_r.jpg";
+    }
+
+    function pic5() {
+        document.getElementById("img").src = "../images/temperature.jpg";
+    }
+    function pic6() {
+        document.getElementById("img").src = "../images/one_hour.gif";
+    }
+</script>
+
+
+<img src="../images/co2.jpg" id="img" height="600px" />
+
+<br>
+<input type="button" value="Show CO2 chart" onclick="pic1()"/>
+<input type="button" value="Show Humidity chart" onclick="pic2()"/>
+<input type="button" value="Show Sensor left chart" onclick="pic3()"/>
+<input type="button" value="Show Sensor right chart" onclick="pic4()"/>
+<input type="button" value="Show Temperature chart" onclick="pic5()"/>
+<input type="button" value="Show Thermal sensor image" onclick="pic6()"/>
+
+
+<br>
+<img src="../images/before.jpg" title="Before"/>
+<br>
+We've gathered dataset of the sensors bordering with Meeting and Discussion rooms and having big open area with 9 desks(which will be treated as private office spaces with its own occupancy patterns)
+Since, we assume each office (essentially occupied by he same people assigned to the space) has some occupancy profile. We've developed clusterization of these occupancy profiles room by room.
+<br>
+<img src="../images/after.jpg" title="After"/>
+<br>
+Explanation
+Figures depict office spaces(colored squares), where color means a particular occupancy pattern. The idea is to rearrange people is such a way so that they have neighbours with similar occupancy patterns(as depicted in 2nd plot). Such rearrangement potentially may give lots of benefits for other building systems: thermal energy, electrcity loads matching, allowing more uniform load distributions across the building
+
+</body>
+</html>
