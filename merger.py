@@ -111,27 +111,47 @@ def get_records_with_ds1(records_list: List[Record], ds1):
             rec.co2 = ds1[rec.timestamp][0]
             rec.humidity = ds1[rec.timestamp][1]
             rec.temperature = ds1[rec.timestamp][2]
+
+            if rec.co2 > 1000:
+                rec.co2 = rec.co2 / 1000
+            if rec.humidity > 1000:
+                rec.humidity = rec.humidity / 1000
+            if rec.temperature > 1000:
+                rec.temperature = rec.temperature / 1000
+
         else:
-            sum_co2 = 0
-            sum_humidity = 0
-            sum_temperature = 0
-            count = 1
+            # sum_co2 = 0
+            # sum_humidity = 0
+            # sum_temperature = 0
+            # count = 1
             for m in range(-8, 8):
                 tmp_d_t = rec.timestamp + datetime.timedelta(minutes=m)
                 if tmp_d_t in ds1:
-                    sum_co2 += ds1[tmp_d_t][0]
-                    sum_humidity += ds1[tmp_d_t][1]
-                    sum_temperature += ds1[tmp_d_t][2]
-                    count += 1
-            if sum_co2:
-                rec.co2 = int(sum_co2 / count)
-            if sum_humidity:
-                rec.humidity = sum_humidity / count
-            if sum_temperature:
-                rec.temperature = sum_temperature / count
-            if count > 1:
-                continue
-            print(f'Error, Timestamp: {rec.timestamp} not in ds1.csv')
+                    rec.co2 = ds1[tmp_d_t][0]
+                    rec.humidity = ds1[tmp_d_t][1]
+                    rec.temperature = ds1[tmp_d_t][2]
+
+                    if rec.co2 > 1000:
+                        rec.co2 = rec.co2 / 1000
+                    if rec.humidity > 1000:
+                        rec.humidity = rec.humidity / 1000
+                    if rec.temperature > 1000:
+                        rec.temperature = rec.temperature / 1000
+
+                    break
+            #         sum_co2 += ds1[tmp_d_t][0]
+            #         sum_humidity += ds1[tmp_d_t][1]
+            #         sum_temperature += ds1[tmp_d_t][2]
+            #         count += 1
+            # if sum_co2:
+            #     rec.co2 = int(sum_co2 / count)
+            # if sum_humidity:
+            #     rec.humidity = sum_humidity / count
+            # if sum_temperature:
+            #     rec.temperature = sum_temperature / count
+            # if count > 1:
+            #     continue
+            # print(f'Error, Timestamp: {rec.timestamp} not in ds1.csv')
 
     return records_list
 
